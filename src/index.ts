@@ -2300,6 +2300,7 @@ function FlatpickrInstance(
     buildMonthSwitch();
     updateNavigationCurrentMonth();
     buildDays();
+    setupMobile();
   }
 
   function focusAndClose() {
@@ -2678,7 +2679,7 @@ function FlatpickrInstance(
 
     self.mobileFormatStr =
       inputType === "datetime-local"
-        ? "Y-m-d\\TH:i:S"
+        ? self.config.enableSeconds ? "Y-m-d\\TH:i:S" : "Y-m-d\\TH:i"
         : inputType === "date"
         ? "Y-m-d"
         : "H:i:S";
@@ -2691,10 +2692,10 @@ function FlatpickrInstance(
     }
 
     if (self.config.minDate)
-      self.mobileInput.min = self.formatDate(self.config.minDate, "Y-m-d");
+      self.mobileInput.min = self.formatDate(self.config.minDate, self.config.enableSeconds ? "Y-m-d\\TH:i:S" : "Y-m-d\\TH:i");
 
     if (self.config.maxDate)
-      self.mobileInput.max = self.formatDate(self.config.maxDate, "Y-m-d");
+      self.mobileInput.max = self.formatDate(self.config.maxDate, self.config.enableSeconds ? "Y-m-d\\TH:i:S" : "Y-m-d\\TH:i");
 
     if (self.input.getAttribute("step"))
       self.mobileInput.step = String(self.input.getAttribute("step"));
