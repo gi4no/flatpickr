@@ -1264,6 +1264,10 @@ function FlatpickrInstance(element, instanceConfig) {
     function minMaxDateSetter(type) {
         return function (date) {
             var dateObj = (self.config["_" + type + "Date"] = self.parseDate(date, self.config.dateFormat));
+            if (self.config.minDate && self.mobileInput)
+                self.mobileInput.min = self.formatDate(self.config.minDate, self.config.enableSeconds ? "Y-m-d\\TH:i:S" : "Y-m-d\\TH:i");
+            if (self.config.maxDate && self.mobileInput)
+                self.mobileInput.max = self.formatDate(self.config.maxDate, self.config.enableSeconds ? "Y-m-d\\TH:i:S" : "Y-m-d\\TH:i");
             var inverseDateObj = self.config["_" + (type === "min" ? "max" : "min") + "Date"];
             if (dateObj !== undefined) {
                 self[type === "min" ? "minDateHasTime" : "maxDateHasTime"] =
@@ -1513,8 +1517,6 @@ function FlatpickrInstance(element, instanceConfig) {
         return style.sheet;
     }
     function redraw() {
-        if (self.isMobile)
-            setupMobile();
         if (self.config.noCalendar || self.isMobile)
             return;
         buildMonthSwitch();
@@ -1797,7 +1799,9 @@ function FlatpickrInstance(element, instanceConfig) {
         self.mobileInput.placeholder = self.input.placeholder;
         self.mobileFormatStr =
             inputType === "datetime-local"
-                ? self.config.enableSeconds ? "Y-m-d\\TH:i:S" : "Y-m-d\\TH:i"
+                ? self.config.enableSeconds
+                    ? "Y-m-d\\TH:i:S"
+                    : "Y-m-d\\TH:i"
                 : inputType === "date"
                     ? "Y-m-d"
                     : "H:i:S";

@@ -1956,6 +1956,18 @@ function FlatpickrInstance(
         `_${type}Date` as "_minDate" | "_maxDate"
       ] = self.parseDate(date, self.config.dateFormat));
 
+      if (self.config.minDate && self.mobileInput)
+        self.mobileInput.min = self.formatDate(
+          self.config.minDate,
+          self.config.enableSeconds ? "Y-m-d\\TH:i:S" : "Y-m-d\\TH:i"
+        );
+
+      if (self.config.maxDate && self.mobileInput)
+        self.mobileInput.max = self.formatDate(
+          self.config.maxDate,
+          self.config.enableSeconds ? "Y-m-d\\TH:i:S" : "Y-m-d\\TH:i"
+        );
+
       const inverseDateObj =
         self.config[
           `_${type === "min" ? "max" : "min"}Date` as "_minDate" | "_maxDate"
@@ -2295,7 +2307,6 @@ function FlatpickrInstance(
   }
 
   function redraw() {
-    if(self.isMobile) setupMobile();
     if (self.config.noCalendar || self.isMobile) return;
 
     buildMonthSwitch();
@@ -2679,7 +2690,9 @@ function FlatpickrInstance(
 
     self.mobileFormatStr =
       inputType === "datetime-local"
-        ? self.config.enableSeconds ? "Y-m-d\\TH:i:S" : "Y-m-d\\TH:i"
+        ? self.config.enableSeconds
+          ? "Y-m-d\\TH:i:S"
+          : "Y-m-d\\TH:i"
         : inputType === "date"
         ? "Y-m-d"
         : "H:i:S";
@@ -2692,10 +2705,16 @@ function FlatpickrInstance(
     }
 
     if (self.config.minDate)
-      self.mobileInput.min = self.formatDate(self.config.minDate, self.config.enableSeconds ? "Y-m-d\\TH:i:S" : "Y-m-d\\TH:i");
+      self.mobileInput.min = self.formatDate(
+        self.config.minDate,
+        self.config.enableSeconds ? "Y-m-d\\TH:i:S" : "Y-m-d\\TH:i"
+      );
 
     if (self.config.maxDate)
-      self.mobileInput.max = self.formatDate(self.config.maxDate, self.config.enableSeconds ? "Y-m-d\\TH:i:S" : "Y-m-d\\TH:i");
+      self.mobileInput.max = self.formatDate(
+        self.config.maxDate,
+        self.config.enableSeconds ? "Y-m-d\\TH:i:S" : "Y-m-d\\TH:i"
+      );
 
     if (self.input.getAttribute("step"))
       self.mobileInput.step = String(self.input.getAttribute("step"));
