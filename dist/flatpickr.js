@@ -2166,12 +2166,13 @@
             return style.sheet;
         }
         function redraw() {
+            if (self.isMobile)
+                setupMobile();
             if (self.config.noCalendar || self.isMobile)
                 return;
             buildMonthSwitch();
             updateNavigationCurrentMonth();
             buildDays();
-            setupMobile();
         }
         function focusAndClose() {
             self._input.focus();

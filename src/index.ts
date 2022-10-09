@@ -2295,12 +2295,12 @@ function FlatpickrInstance(
   }
 
   function redraw() {
+    if(self.isMobile) setupMobile();
     if (self.config.noCalendar || self.isMobile) return;
 
     buildMonthSwitch();
     updateNavigationCurrentMonth();
     buildDays();
-    setupMobile();
   }
 
   function focusAndClose() {
